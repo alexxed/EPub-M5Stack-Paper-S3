@@ -1,45 +1,41 @@
-# EPub-M5Stack-Paper-S3 (fork of EPub-InkPlate)
+# EPub-M5Paper
 
-This repository is a fork of https://github.com/turgu1/EPub-InkPlate, ported to support the **M5Stack Paper S3** (ESP32-S3).
+This repository is an EPub reader for the **M5Stack M5Paper** device (ESP32 Fire with IT8951 e-paper controller).
 
-- **Upstream**: https://github.com/turgu1/EPub-InkPlate
-- **This fork**: https://github.com/juicecultus/EPub-M5Stack-Paper-S3
+Original upstream: https://github.com/turgu1/EPub-InkPlate
 
-### Quick start (M5Stack Paper S3)
+### Quick start (M5Paper)
 
 ```bash
-git clone --recurse-submodules https://github.com/juicecultus/EPub-M5Stack-Paper-S3.git
+git clone --recurse-submodules https://github.com/alexxed/EPub-M5Stack-Paper-S3.git
 cd EPub-M5Stack-Paper-S3
 
 # (Optional safety) ensure submodules are initialized
 git submodule update --init --recursive
 
 # Build
-pio run -e paper_s3
+pio run -e m5paper
 
 # Flash
-pio run -e paper_s3 -t upload
+pio run -e m5paper -t upload
 ```
 
-The PlatformIO environment for this device is `paper_s3` (see `platformio.ini`).
+The PlatformIO environment for this device is `m5paper` (see `platformio.ini`).
 
 ## Last news
 
-(Updated 2022.5.01)
+(Updated 2026.02.01)
 
-Update to version 2.0.1
+Update to M5Paper-only version
 
-- For Inkplate-6PLUS and Inkplate-10: The ESP-IDF-Inkplate library has been updated (v0.9.6) to support some of these devices to be delivered without a second MCP chip onboard. The presence of the second MCP is now dynamically detected by the software.
-
-- For all Inkplates: Now using ESP-IDF framework v4.3.2
-
-## Unresolved issue
-
-[ ] A device reset may happen reading a book, and changing the current font as the background process is computing pages location. 
+- Removed support for all InkPlate devices
+- Removed support for Paper S3
+- Simplified codebase to support only M5Stack M5Paper (ESP32 Fire)
+- Uses M5EPD library for IT8951 e-paper controller
 
 ---
 
-This is an EPub reader for the e-Radionica made Inkplate devices.
+This is an EPub reader for the M5Stack M5Paper device.
 
 Here are the main characterics:
 
@@ -61,36 +57,22 @@ Here are the main characterics:
 - Multiple fonts choices selectable by the user.
 - Linear and matrix view of book list.
 - Real-Time clock.
-- Inkplate-6PLUS touch screen and backlit.
+- Touch screen support (GT911).
 - Keeps location of the last 10 books being read.
 
-Some vidos are  available on YouTube:
+### Supported Device
 
-- The first working version of the EPub-InkPlate application [Here](https://www.youtube.com/watch?v=VnTLMhEgsqA).
-- Demostration on the InkPlate-10 [Here](https://www.youtube.com/watch?v=qNAjbnEax8k).
-- Demonstration on the Inkplate-6PLUS [Here](https://www.youtube.com/watch?v=z1nvakbxiUQ).
-
-Some pictures from the InkPlate-6 version:
-
-<img src="doc/pictures/IMG_1377.JPG" alt="picture" width="300"/><img src="doc/pictures/IMG_1378.JPG" alt="picture" width="300"/>
-<img src="doc/pictures/IMG_1381.JPG" alt="picture" width="300"/>
-
-Some pictures from the Linux version:
-
-<img src="doc/pictures/books_select.png" alt="drawing" width="300"/><img src="doc/pictures/book_page.png" alt="drawing" width="300"/>
-
-A picture of the Web Server in a browser:
-
-<img src="doc/pictures/web_server.png" alt="drawing" width="500"/>
-
-Books Directory List: Linear vs Matrix View:
-
-<img src="doc/pictures/linear_view_6.png" alt="picture" width="300"/><img src="doc/pictures/matrix_view_6.png" alt="picture" width="300"/>
-
+**M5Stack M5Paper**
+- ESP32 Fire (dual-core 240MHz)
+- 4.7" e-paper display (960x540 pixels, 16 grayscale levels)
+- IT8951 e-paper controller
+- GT911 capacitive touch screen
+- MicroSD card slot
+- 1150mAh battery
 
 ### Runtime environment
 
-The EPub-InkPlate application requires that a micro-SD Card be present in the device. This micro-SD Card must be pre-formatted with a FAT32 partition. Two folders must be present in the partition: `fonts` and `books`. You must put the base fonts in the `fonts` folder and your EPub books in the `books` folder. The books must have the extension `.epub` in lowercase. 
+The EPub-M5Paper application requires that a micro-SD Card be present in the device. This micro-SD Card must be pre-formatted with a FAT32 partition. Two folders must be present in the partition: `fonts` and `books`. You must put the base fonts in the `fonts` folder and your EPub books in the `books` folder. The books must have the extension `.epub` in lowercase. 
 
 Height font types are supplied with the application. For each type, there are four fonts supplied, to support regular, bold, oblique, and bold-italic glyphs. The application offers the user to select one of those font types as the default font. The fonts have been cleaned-up and contain only Latin-1 glyphs.
 
