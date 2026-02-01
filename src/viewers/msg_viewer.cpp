@@ -363,7 +363,7 @@ MsgViewer::out_of_memory(const char * raison)
     #define LEVEL 1
   #endif
 
-  #if defined(BOARD_TYPE_PAPER_S3)
+  #if defined(BOARD_TYPE_M5PAPER)
     #undef INT_PIN
     #define INT_PIN ((gpio_num_t)0)
   #endif

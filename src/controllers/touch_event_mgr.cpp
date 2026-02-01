@@ -6,7 +6,7 @@
 // Touch Screen calibration algorithm from: https://www.embedded.com/how-to-calibrate-touch-screens
 //
 
-#if (INKPLATE_6PLUS || TOUCH_TRIAL) && !defined(BOARD_TYPE_PAPER_S3)
+#if (TOUCH_TRIAL) && !defined(BOARD_TYPE_M5PAPER)
 
 #define __EVENT_MGR__ 1
 #include "controllers/event_mgr.hpp"

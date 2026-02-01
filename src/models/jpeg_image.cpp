@@ -9,7 +9,7 @@
 
 #include "alloc.hpp"
 
-#if defined(BOARD_TYPE_PAPER_S3)
+#if defined(BOARD_TYPE_M5PAPER)
   #include <JPEGDEC.h>
 #else
   #include "tjpgdec.hpp"
@@ -20,7 +20,7 @@ static bool      waiting_msg_shown;
 
 // static bool first = false;
 
-#if defined(BOARD_TYPE_PAPER_S3)
+#if defined(BOARD_TYPE_M5PAPER)
 
 struct JpegDecCtx {
   Image::ImageData * image_data;
@@ -78,9 +78,9 @@ static int JPEGDraw(JPEGDRAW *pDraw)
   return 1;
 }
 
-#endif // BOARD_TYPE_PAPER_S3
+#endif // BOARD_TYPE_M5PAPER
 
-#if !defined(BOARD_TYPE_PAPER_S3)
+// Original JPEG decoder functions for other platforms (not used on M5Paper)
 
 static size_t in_func (     /* Returns number of bytes read (zero on error) */
     JDEC    * jd,    /* Decompression object */
@@ -154,13 +154,13 @@ static int out_func (       /* Returns 1 to continue, 0 to abort */
   return 1;    /* Continue to decompress */
 }
 
-#endif // !BOARD_TYPE_PAPER_S3
+#endif // !BOARD_TYPE_M5PAPER
 
 JPegImage::JPegImage(std::string filename, Dim max, bool load_bitmap) : Image(filename)
 {
   LOG_D("Loading image file %s", filename.c_str());
 
-#if defined(BOARD_TYPE_PAPER_S3)
+#if defined(BOARD_TYPE_M5PAPER)
   uint32_t jpg_size = 0;
   char * jpg_data = unzip.get_file(filename.c_str(), jpg_size);
   if (jpg_data == nullptr || jpg_size == 0) {

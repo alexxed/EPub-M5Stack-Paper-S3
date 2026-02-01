@@ -62,29 +62,6 @@ ScreenBottom::show(int16_t page_nbr, int16_t page_count)
                     fmt);
   }
 
-  // Heap info and battery viewer rely on Inkplate-specific drivers, which
-  // are not available on Paper S3.
-  #if EPUB_INKPLATE_BUILD && !BOARD_TYPE_PAPER_S3
-    int8_t show_heap;
-    config.get(Config::Ident::SHOW_HEAP, &show_heap);
-
-    if (show_heap != 0) {
-      ostr.str(std::string());
-      ostr << uxTaskGetStackHighWaterMark(nullptr)
-           << " / "
-           << heap_caps_get_largest_free_block(MALLOC_CAP_8BIT) 
-           << " / " 
-           << heap_caps_get_free_size(MALLOC_CAP_8BIT);
-      fmt.align = CSS::Align::RIGHT;
-      page.put_str_at(ostr.str(), 
-                      Pos(Page::HORIZONTAL_CENTER, 
-                          Screen::get_height() + font->get_descender_height(FONT_SIZE) - 2), 
-                      fmt);
-    }
-
-    BatteryViewer::show();
-  #endif
-
   #if DATE_TIME_RTC
     int8_t show_rtc;
     config.get(Config::Ident::SHOW_RTC, &show_rtc);

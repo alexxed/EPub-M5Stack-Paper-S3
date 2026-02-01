@@ -19,39 +19,16 @@ class Clock
 
   public:
     static void set_date_time(const time_t & tm) {
-      #if EPUB_INKPLATE_BUILD && !defined(BOARD_TYPE_PAPER_S3)
-        if (rtc.is_present()) {
-          rtc.set_date_time(&tm);
-        }
-        else {
-          timeval tv;
-          tv.tv_sec = tm;
-          tv.tv_usec = 0;
-          settimeofday(&tv, nullptr);
-        }
-      #else
-        // On Paper S3 (and non-Inkplate builds), just set system time.
-        timeval tv;
-        tv.tv_sec = tm;
-        tv.tv_usec = 0;
-        settimeofday(&tv, nullptr);
-      #endif
+      // On M5Paper (and non-Inkplate builds), just set system time.
+      timeval tv;
+      tv.tv_sec = tm;
+      tv.tv_usec = 0;
+      settimeofday(&tv, nullptr);
     }
 
     static void get_date_time(time_t & t) {
-      #if EPUB_INKPLATE_BUILD && !defined(BOARD_TYPE_PAPER_S3)
-        if (rtc.is_present()) {
-          LOG_D("RTC chip is present");
-          rtc.get_date_time(&t);
-        }
-        else {
-          LOG_D("RTC chip is NOT present");
-          time(&t);
-        }
-      #else
-        // On Paper S3 (and non-Inkplate builds), just use system time.
-        time(&t);
-      #endif        
+      // On M5Paper (and non-Inkplate builds), just use system time.
+      time(&t);
     }
 };
 

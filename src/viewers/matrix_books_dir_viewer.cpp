@@ -75,9 +75,6 @@ MatrixBooksDirViewer::show_page(int16_t page_nbr, int16_t hightlight_item_idx)
 
   int16_t xpos = 5;
   int16_t ypos = first_entry_ypos;
-  #if !defined(BOARD_TYPE_PAPER_S3)
-    int16_t line_pos = 0;
-  #endif
 
   Page::Format fmt = {
       .line_height_factor =   0.8,
@@ -115,12 +112,10 @@ MatrixBooksDirViewer::show_page(int16_t page_nbr, int16_t hightlight_item_idx)
     int16_t draw_x = xpos;
     int16_t draw_y = ypos;
 
-    #if defined(BOARD_TYPE_PAPER_S3)
-      int16_t row = item_idx / column_count;
-      int16_t col = item_idx % column_count;
-      draw_x = 5 + ((BooksDir::MAX_COVER_WIDTH + horiz_space_between_entries) * col);
-      draw_y = first_entry_ypos + ((BooksDir::MAX_COVER_HEIGHT + vert_space_between_entries) * row);
-    #endif
+    int16_t row = item_idx / column_count;
+    int16_t col = item_idx % column_count;
+    draw_x = 5 + ((BooksDir::MAX_COVER_WIDTH + horiz_space_between_entries) * col);
+    draw_y = first_entry_ypos + ((BooksDir::MAX_COVER_HEIGHT + vert_space_between_entries) * row);
 
     Image::ImageData image(Dim(book->cover_width, book->cover_height), (uint8_t *) book->cover_bitmap);
     page.put_image(image, Pos(draw_x + ((BooksDir::MAX_COVER_WIDTH - book->cover_width) >> 1), 
@@ -159,19 +154,6 @@ MatrixBooksDirViewer::show_page(int16_t page_nbr, int16_t hightlight_item_idx)
         page.new_paragraph(fmt);
         page.add_text(book->author, fmt);
         page.end_paragraph(fmt);
-      }
-    #endif
-
-    #if !defined(BOARD_TYPE_PAPER_S3)
-      line_pos++;
-
-      if (line_pos >= line_count) {
-        xpos    += BooksDir::MAX_COVER_WIDTH + horiz_space_between_entries;
-        ypos     = first_entry_ypos;
-        line_pos = 0;
-      }
-      else {
-        ypos += BooksDir::MAX_COVER_HEIGHT + vert_space_between_entries;
       }
     #endif
   }
@@ -234,13 +216,8 @@ MatrixBooksDirViewer::highlight(int16_t item_idx)
 
     book_idx = current_page_nbr * books_per_page + current_item_idx;
 
-    #if defined(BOARD_TYPE_PAPER_S3)
-      column_idx = current_item_idx % column_count;
-      line_idx   = current_item_idx / column_count;
-    #else
-      column_idx = current_item_idx / line_count;
-      line_idx   = current_item_idx % line_count;
-    #endif
+    column_idx = current_item_idx % column_count;
+    line_idx   = current_item_idx / column_count;
 
     xpos = 5 + ((BooksDir::max_cover_width + horiz_space_between_entries) * column_idx);
     ypos = first_entry_ypos + ((BooksDir::max_cover_height + vert_space_between_entries) * line_idx);
@@ -271,13 +248,8 @@ MatrixBooksDirViewer::highlight(int16_t item_idx)
   
   current_item_idx = item_idx;
 
-  #if defined(BOARD_TYPE_PAPER_S3)
-    column_idx = current_item_idx % column_count;
-    line_idx   = current_item_idx / column_count;
-  #else
-    column_idx = current_item_idx / line_count;
-    line_idx   = current_item_idx % line_count;
-  #endif
+  column_idx = current_item_idx % column_count;
+  line_idx   = current_item_idx / column_count;
 
   xpos = 5 + ((BooksDir::max_cover_width + horiz_space_between_entries) * column_idx);
   ypos = first_entry_ypos + ((BooksDir::max_cover_height + vert_space_between_entries) * line_idx);
@@ -333,13 +305,8 @@ MatrixBooksDirViewer::clear_highlight()
 
   int16_t book_idx = current_page_nbr * books_per_page + current_item_idx;
 
-  #if defined(BOARD_TYPE_PAPER_S3)
-    int16_t column_idx = current_item_idx % column_count;
-    int16_t line_idx   = current_item_idx / column_count;
-  #else
-    int16_t column_idx = current_item_idx / line_count;
-    int16_t line_idx   = current_item_idx % line_count;
-  #endif
+  int16_t column_idx = current_item_idx % column_count;
+  int16_t line_idx   = current_item_idx / column_count;
 
   int16_t xpos = 5 + ((BooksDir::max_cover_width + horiz_space_between_entries) * column_idx);
   int16_t ypos = first_entry_ypos + ((BooksDir::max_cover_height + vert_space_between_entries) * line_idx);
@@ -383,18 +350,6 @@ MatrixBooksDirViewer::clear_highlight()
 
   page.clear_region(Dim(Screen::get_width() - 10, (title_font_height << 1) + author_font_height),
                     Pos(10, 10));
-
-  #if (INKPLATE_6PLUS || TOUCH_TRIAL)
-    fmt.screen_top = 10 + title_font_height;
-    page.set_limits(fmt);
-    page.new_paragraph(fmt);
-    page.add_text(TOUCH_AND_HOLD_STR, fmt);
-    page.end_paragraph(fmt);
-  #endif
-
-  #if EPUB_INKPLATE_BUILD && !BOARD_TYPE_PAPER_S3
-    BatteryViewer::show();
-  #endif
 
   page.paint(false);
 

@@ -13,11 +13,11 @@
  * 
  * This class implements the low level methods required to paint
  * on the display. Under the InkPlate6, it is using the EInk display driver. 
- * For BOARD_TYPE_PAPER_S3, a minimal stub implementation is provided
+ * For BOARD_TYPE_M5PAPER, a minimal stub implementation is provided
  * that will later be backed by the epdiy renderer.
  */
 
-#if defined(BOARD_TYPE_PAPER_S3)
+#if defined(BOARD_TYPE_M5PAPER)
 
 class Screen : NonCopyable
 {
@@ -65,7 +65,7 @@ class Screen : NonCopyable
     inline static uint16_t get_height() { return height; }
 };
 
-#else  // !BOARD_TYPE_PAPER_S3
+#else  // !BOARD_TYPE_M5PAPER
 
 class Screen : NonCopyable
 {
@@ -168,7 +168,7 @@ class Screen : NonCopyable
     inline static uint16_t get_height() { return height; }
 };
 
-#endif // BOARD_TYPE_PAPER_S3
+#endif // BOARD_TYPE_M5PAPER
 
 #if __SCREEN__
   Screen & screen = Screen::get_singleton();

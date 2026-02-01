@@ -54,12 +54,10 @@ static int8_t old_dir_view;
   static int8_t show_heap;
 #endif
 
-#if defined(BOARD_TYPE_PAPER_S3)
-  // On Paper S3 the display is always driven in 4-bit grayscale via epdiy,
+#if defined(BOARD_TYPE_M5PAPER)
+  // On M5Paper the display is always driven in 4-bit grayscale via epdiy,
   // so the Pixel Resolution setting is not exposed in the UI.
   static constexpr int8_t MAIN_FORM_SIZE = 7;
-#elif INKPLATE_6PLUS || TOUCH_TRIAL
-  static constexpr int8_t MAIN_FORM_SIZE = 8;
 #else
   static constexpr int8_t MAIN_FORM_SIZE = 7;
 #endif
@@ -67,14 +65,7 @@ static int8_t old_dir_view;
 static FormEntry main_params_form_entries[MAIN_FORM_SIZE] = {
   { .caption = "Minutes Before Sleeping :",  .u = { .ch = { .value = &timeout,                .choice_count = 3, .choices = FormChoiceField::timeout_choices        } }, .entry_type = FormEntryType::HORIZONTAL  },
   { .caption = "Books Directory View :",     .u = { .ch = { .value = &dir_view,               .choice_count = 2, .choices = FormChoiceField::dir_view_choices       } }, .entry_type = FormEntryType::HORIZONTAL  },
-  #if INKPLATE_6PLUS || TOUCH_TRIAL
-    { .caption = "uSDCard Position (*):",    .u = { .ch = { .value = (int8_t *) &orientation, .choice_count = 4, .choices = FormChoiceField::orientation_choices    } }, .entry_type = FormEntryType::VERTICAL    },
-  #else
-    { .caption = "Buttons Position (*):",    .u = { .ch = { .value = (int8_t *) &orientation, .choice_count = 3, .choices = FormChoiceField::orientation_choices    } }, .entry_type = FormEntryType::VERTICAL    },
-  #endif
-  #if !defined(BOARD_TYPE_PAPER_S3)
-    { .caption = "Pixel Resolution :",         .u = { .ch = { .value = (int8_t *) &resolution,  .choice_count = 2, .choices = FormChoiceField::resolution_choices     } }, .entry_type = FormEntryType::HORIZONTAL  },
-  #endif
+  { .caption = "Buttons Position (*):",    .u = { .ch = { .value = (int8_t *) &orientation, .choice_count = 3, .choices = FormChoiceField::orientation_choices    } }, .entry_type = FormEntryType::VERTICAL    },
   { .caption = "Show Battery Level :",       .u = { .ch = { .value = &show_battery,           .choice_count = 4, .choices = FormChoiceField::battery_visual_choices } }, .entry_type = FormEntryType::VERTICAL    },
   { .caption = "Show Title (*):",            .u = { .ch = { .value = &show_title,             .choice_count = 2, .choices = FormChoiceField::yes_no_choices         } }, .entry_type = FormEntryType::HORIZONTAL  },
   #if DATE_TIME_RTC
@@ -82,32 +73,18 @@ static FormEntry main_params_form_entries[MAIN_FORM_SIZE] = {
   #else
     { .caption = "Show Heap Sizes :",        .u = { .ch = { .value = &show_heap,              .choice_count = 2, .choices = FormChoiceField::yes_no_choices         } }, .entry_type = FormEntryType::HORIZONTAL  },
   #endif
-  #if INKPLATE_6PLUS || TOUCH_TRIAL
-    { .caption = " DONE ",                   .u = { .ch = { .value = &done,                   .choice_count = 0, .choices = nullptr                                 } }, .entry_type = FormEntryType::DONE        }
-  #endif
  };
 
-#if INKPLATE_6PLUS || TOUCH_TRIAL
-  static constexpr int8_t FONT_FORM_SIZE = 5;
-#else
-  static constexpr int8_t FONT_FORM_SIZE = 4;
-#endif
+static constexpr int8_t FONT_FORM_SIZE = 4;
 static FormEntry font_params_form_entries[FONT_FORM_SIZE] = {
   { .caption = "Default Font Size (*):",      .u = { .ch = { .value = &font_size,          .choice_count = 4, .choices = FormChoiceField::font_size_choices } }, .entry_type = FormEntryType::HORIZONTAL },
   { .caption = "Use Fonts in E-books (*):",   .u = { .ch = { .value = &use_fonts_in_books, .choice_count = 2, .choices = FormChoiceField::yes_no_choices    } }, .entry_type = FormEntryType::HORIZONTAL },
   { .caption = "Default Font (*):",           .u = { .ch = { .value = &default_font,       .choice_count = 8, .choices = FormChoiceField::font_choices      } }, .entry_type = FormEntryType::VERTICAL   },
-  { .caption = "Show Images in E-books (*):", .u = { .ch = { .value = &show_images,        .choice_count = 2, .choices = FormChoiceField::yes_no_choices    } }, .entry_type = FormEntryType::HORIZONTAL },
-  #if INKPLATE_6PLUS || TOUCH_TRIAL
-    { .caption = " DONE ",                    .u = { .ch = { .value = &done,               .choice_count = 0, .choices = nullptr                            } }, .entry_type = FormEntryType::DONE       }
-  #endif
+  { .caption = "Show Images in E-books (*):", .u = { .ch = { .value = &show_images,        .choice_count = 2, .choices = FormChoiceField::yes_no_choices    } }, .entry_type = FormEntryType::HORIZONTAL }
 };
 
 #if DATE_TIME_RTC
-  #if INKPLATE_6PLUS || TOUCH_TRIAL
-    static constexpr int8_t DATE_TIME_FORM_SIZE = 7;
-  #else
-    static constexpr int8_t DATE_TIME_FORM_SIZE = 6;
-  #endif
+  static constexpr int8_t DATE_TIME_FORM_SIZE = 6;
 
   static FormEntry date_time_form_entries[DATE_TIME_FORM_SIZE] = {
     { .caption = "Year :",   .u = { .val = { .value = &year,   .min = 2022, .max = 2099 } }, .entry_type = FormEntryType::UINT16  },
@@ -115,11 +92,7 @@ static FormEntry font_params_form_entries[FONT_FORM_SIZE] = {
     { .caption = "Day :",    .u = { .val = { .value = &day,    .min =    1, .max =   31 } }, .entry_type = FormEntryType::UINT16  },
     { .caption = "Hour :",   .u = { .val = { .value = &hour,   .min =    0, .max =   23 } }, .entry_type = FormEntryType::UINT16  },
     { .caption = "Minute :", .u = { .val = { .value = &minute, .min =    0, .max =   59 } }, .entry_type = FormEntryType::UINT16  },
-    { .caption = "Second :", .u = { .val = { .value = &second, .min =    0, .max =   59 } }, .entry_type = FormEntryType::UINT16  },
-
-    #if INKPLATE_6PLUS || TOUCH_TRIAL
-      { .caption = "DONE",   .u = { .ch  = { .value = &done,   .choice_count = 0, .choices = nullptr } }, .entry_type = FormEntryType::DONE    }
-    #endif
+    { .caption = "Second :", .u = { .val = { .value = &second, .min =    0, .max =   59 } }, .entry_type = FormEntryType::UINT16  }
   };
 #endif
 
@@ -131,9 +104,6 @@ main_parameters()
 {
   config.get(Config::Ident::ORIENTATION,      (int8_t *) &orientation);
   config.get(Config::Ident::DIR_VIEW,         &dir_view              );
-  #if !defined(BOARD_TYPE_PAPER_S3)
-    config.get(Config::Ident::PIXEL_RESOLUTION, (int8_t *) &resolution );
-  #endif
   config.get(Config::Ident::BATTERY,          &show_battery          );
   config.get(Config::Ident::SHOW_TITLE,       &show_title            );
   config.get(Config::Ident::TIMEOUT,          &timeout               );
@@ -150,9 +120,6 @@ main_parameters()
 
   old_orientation = orientation;
   old_dir_view    = dir_view;
-  #if !defined(BOARD_TYPE_PAPER_S3)
-    old_resolution  = resolution;
-  #endif
   old_show_title  = show_title;
   done            = 1;
 
@@ -422,9 +389,6 @@ OptionController::input_event(const EventMgr::Event & event)
       // if (ok) {
         config.put(Config::Ident::ORIENTATION,      (int8_t) orientation);
         config.put(Config::Ident::DIR_VIEW,         dir_view            );
-        #if !defined(BOARD_TYPE_PAPER_S3)
-          config.put(Config::Ident::PIXEL_RESOLUTION, (int8_t) resolution );
-        #endif
         config.put(Config::Ident::BATTERY,          show_battery        );
         config.put(Config::Ident::SHOW_TITLE,       show_title          );
         config.put(Config::Ident::TIMEOUT,          timeout             );
@@ -448,24 +412,12 @@ OptionController::input_event(const EventMgr::Event & event)
           books_dir_controller.set_current_book_index(-1);
         }
         
-        #if !defined(BOARD_TYPE_PAPER_S3)
-          if (old_resolution != resolution) {
-            fonts.clear_glyph_caches();
-            screen.set_pixel_resolution(resolution);
-          }
-        #endif
-
         if ((old_orientation != orientation) ||
             (old_show_title  != show_title )) {
           epub.update_book_format_params();
         }
 
-        #if !defined(BOARD_TYPE_PAPER_S3)
-          if ((old_orientation != orientation) || 
-              (old_resolution  != resolution )) {
-        #else
-          if (old_orientation != orientation) {
-        #endif
+        if (old_orientation != orientation) {
           menu_viewer.show(menu, 2, true);
         }
         else {

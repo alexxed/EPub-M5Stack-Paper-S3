@@ -7,7 +7,7 @@
 #include "viewers/msg_viewer.hpp"
 #include "alloc.hpp"
 
-#if defined(BOARD_TYPE_PAPER_S3)
+#if defined(BOARD_TYPE_M5PAPER)
   #include <PNGdec.h>
 #else
   #include "mypngle.hpp"
@@ -19,7 +19,7 @@ static uint32_t  load_start_time;
 static bool      waiting_msg_shown;
 static uint16_t  pix_count;
 
-#if defined(BOARD_TYPE_PAPER_S3)
+#if defined(BOARD_TYPE_M5PAPER)
 
 struct PngDecCtx {
   PNG * png;
@@ -141,7 +141,7 @@ PngImage::PngImage(std::string filename, Dim max, bool load_bitmap) : Image(file
 {
   LOG_I("Loading PNG image file %s", filename.c_str());
 
-  #if defined(BOARD_TYPE_PAPER_S3)
+  #if defined(BOARD_TYPE_M5PAPER)
     uint32_t png_size = 0;
     char * png_data = unzip.get_file(filename.c_str(), png_size);
     if (png_data == nullptr || png_size == 0) {

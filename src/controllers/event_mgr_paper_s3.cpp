@@ -1,10 +1,10 @@
-// Paper S3 EventMgr stub implementation
+// M5Paper EventMgr stub implementation
 // Provides a minimal, no-input EventMgr so the EPUB app can run
-// on BOARD_TYPE_PAPER_S3 without Inkplate-specific key handling.
+// on BOARD_TYPE_M5PAPER without Inkplate-specific key handling.
 
 #include "global.hpp"
 
-#if defined(BOARD_TYPE_PAPER_S3)
+#if defined(BOARD_TYPE_M5PAPER)
 
 #include "controllers/event_mgr.hpp"
 #include "controllers/app_controller.hpp"
@@ -317,4 +317,4 @@ void EventMgr::set_orientation(Screen::Orientation)
 {
 }
 
-#endif // BOARD_TYPE_PAPER_S3
+#endif // BOARD_TYPE_M5PAPER

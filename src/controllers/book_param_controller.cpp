@@ -18,7 +18,8 @@
 #include "viewers/form_viewer.hpp"
 #include "viewers/msg_viewer.hpp"
 
-#if EPUB_INKPLATE_BUILD && !BOARD_TYPE_PAPER_S3
+// Book parameter controller for M5Paper with touch controls removed
+// This file is excluded from build for BOARD_TYPE_M5PAPER.
   #include "esp_system.h"
   #include "eink.hpp"
   #include "esp.hpp"
